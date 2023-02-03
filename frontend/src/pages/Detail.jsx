@@ -29,6 +29,7 @@ export default function Detail() {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
+<<<<<<< HEAD
     // 상품 정보를 가져오는 GET 요청
     axios.get(`http://localhost:8080/product/detail/${params.productId}`)
     .then((res) => {
@@ -40,13 +41,33 @@ export default function Detail() {
 
 
   useEffect(() => {
+=======
+    // 상품 정보 불러오기
+>>>>>>> 49afea2a9d91dbaffa7e0202084f389afbc2a1ab
     axios.get(`http://localhost:8080/product/${productId}`)
     .then((res) => { 
-      // 상세 정보 불러오기
       setProduct(res.data)
+      console.log(res.data)
     })
     .catch((err) => { console.log(err)});
-  })
+  }, [])
+
+  // 일반채팅하기
+  const requestChat = () => {
+    // 판매자 정보, 구매자 정보 보내주기
+    axios.post('http://localhost:8080/chat/room', {
+      userCode1 : 1,
+      userCode2 : 2,
+    })
+    .then((res) => { console.log(res.data)})
+    .catch((err) => { console.log(err)})
+  }
+
+  // 라이브 요청하기
+  const requestLive = () => {
+    // 2 포인트 빼기,,,
+    
+  }
 
   return (
     <div className={styles.body}>
