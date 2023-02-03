@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileService {
 
-    public void uploadPhoto(MultipartFile file) {
+    public void uploadPhoto() {
         //구현하기
 
     }
