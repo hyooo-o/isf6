@@ -59,10 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //                .antMatchers(FRONT_URL+"/main/**")
 //                .authenticated()
-//                .antMatchers("/api/v1/live/**", "/api/v1/liveRequest/**",
-//                        "/api/v1/product/**", "/api/v1/review/**", "/api/v1/socket/**",
-//                        "/api/me", "/api/user/**", "/api/v1/products/**").authenticated()
-                .antMatchers().authenticated()
+                .antMatchers("/api/v1/live/**", "/api/v1/liveRequest/**",
+                        "/api/v1/product/**", "/api/v1/review/**", "/api/v1/socket/**",
+                        "/api/me", "/api/user/**", "/api/v1/products/**").authenticated()
+//                .antMatchers().authenticated()
                 .anyRequest().permitAll();
 
         http.addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
