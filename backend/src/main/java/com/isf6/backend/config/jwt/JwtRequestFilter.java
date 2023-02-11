@@ -8,6 +8,7 @@ import com.isf6.backend.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
+@Order(0)
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -27,8 +29,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("filter 진입");
         String jwtHeader = ((HttpServletRequest)request).getHeader(JwtProperties.HEADER_STRING);
-        //System.out.println("JwtRequestFilter 진입");
+        log.info("jwtHeader : {}", jwtHeader);
 
         // header 가 정상적인 형식인지 확인
         if(jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {

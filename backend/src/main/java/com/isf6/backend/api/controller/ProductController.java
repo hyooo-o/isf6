@@ -79,7 +79,7 @@ public class ProductController {
     }
 
     @ApiOperation(value = "상품 상세정보 조회", notes = "DB에서 상품의 상세 정보를 조회")
-    @GetMapping("/api/v1/product/{id}")
+    @GetMapping("/api/v1/productDetail/{id}") //수정
     public ProductResponseDto findById (@ApiParam(value = "상품 Id", required = true) @PathVariable Long id,
                                         @ApiParam(value = "유저 code", required = true) @RequestParam Long userCode) {
         return productService.findById(id, userCode);
@@ -110,7 +110,7 @@ public class ProductController {
     }
 
     @ApiOperation(value = "상품 검색", notes = "DB에서 상품 제목으로 상품 검색하여 5개씩 전달")
-    @PostMapping("/api/v1/product/search")
+    @PostMapping("/api/v1/search") //여기 수정
     public List<IndexProductsDto> searchProducts(@ApiParam(value = "상품 검색 정보", required = true) @RequestBody ProductSearchReqDto requestDto) {
         List<Product> products = productSearchRepository.findBySearch(requestDto);
 
@@ -172,7 +172,7 @@ public class ProductController {
 
     //offset방식
     @ApiOperation(value = "메인 페이지 상품 목록", notes = "DB에 등록된 상품 정보를 5개씩 전달")
-    @GetMapping("/api/v1/products/main")
+    @GetMapping("/api/v1/main") //여기 수정
     public List<IndexProductsResDto> getMainProduct(@RequestParam int pageNo, @RequestParam int pageSize) {
         return productService.getMainProducts(pageNo, pageSize);
     }

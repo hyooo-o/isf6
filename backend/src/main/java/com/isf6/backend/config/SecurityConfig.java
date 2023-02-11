@@ -1,5 +1,6 @@
 package com.isf6.backend.config;
 
+import com.isf6.backend.config.jwt.CustomAccessDeniedHandler;
 import com.isf6.backend.config.jwt.CustomAuthenticationEntryPoint;
 import com.isf6.backend.config.jwt.JwtRequestFilter;
 import com.isf6.backend.domain.repository.UserRepository;
@@ -12,7 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.filter.CorsFilter;
 
 // Oauth 로그인 진행 순서
@@ -42,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.httpBasic().disable();
         http.csrf().disable()
                 .sessionManagement()  // session 을 사용하지 않음
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -51,17 +55,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .addFilter(corsFilter); // @CrossOrigin(인증X), 시큐리티 필터에 등록 인증(O)
 
-        http.authorizeRequests()
-                .antMatchers(FRONT_URL+"/main/**")
-                .authenticated()
-                .antMatchers().authenticated() //ROLE 을 정해주고 허용되는 url만 적어주거나 하면 된대~~
-                .anyRequest().permitAll()
 
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+        http.authorizeRequests()
+//                .antMatchers(FRONT_URL+"/main/**")
+//                .authenticated()
+//                .antMatchers("/api/v1/live/**", "/api/v1/liveRequest/**",
+//                        "/api/v1/product/**", "/api/v1/review/**", "/api/v1/socket/**",
+//                        "/api/me", "/api/user/**", "/api/v1/products/**").authenticated()
+                .antMatchers().authenticated()
+                .anyRequest().permitAll();
 
         http.addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(new CustomAccessDeniedHandler());
+        //.and().addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+
     }
 
 }
